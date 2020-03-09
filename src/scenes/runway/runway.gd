@@ -12,10 +12,17 @@ export var BORDER:Color
 export var RUNWAY:Color
 export var DIVID_LINE:Color
 export var GRAMME:Color
+export var STRIPED_RUNWAY:Color
+export var STRIPED_BORDER:Color
+export var STRIPED_DIVID_LINE:Color
+export var STRIPED_GRAMME:Color
+
+var NEW_BORDER:Color
+var NEW_RUNWAY:Color
+var NEW_DIVID_LINE:Color
+var NEW_GRAMME:Color
 
 var lines = []
-
-var street
 
 var current_position = 0
 var lines_lenght
@@ -25,6 +32,10 @@ var player_x = 0
 
 func _ready():
 	init()
+	
+
+func _process(delta): 
+	update()
 	
 	
 func _draw():
@@ -54,14 +65,10 @@ func _draw():
 		
 		add_colors(n)
 		
-		draw_runway(GRAMME, 0, actual_position.Y, WIDTH, 0, current_line.Y, WIDTH)
-		draw_runway(BORDER, actual_position.X, actual_position.Y, actual_position.W * 1.2, current_line.X, current_line.Y, current_line.W * 1.2)
-		draw_runway(RUNWAY, actual_position.X, actual_position.Y, actual_position.W, current_line.X, current_line.Y, current_line.W)
-		draw_runway(DIVID_LINE, actual_position.X, actual_position.Y, actual_position.W * 0.01, current_line.X, current_line.Y, current_line.W * 0.01)
-		
-	
-func _process(delta): 
-	update()
+		draw_runway(NEW_GRAMME, 0, actual_position.Y, WIDTH, 0, current_line.Y, WIDTH)
+		draw_runway(NEW_BORDER, actual_position.X, actual_position.Y, actual_position.W * 1.2, current_line.X, current_line.Y, current_line.W * 1.2)
+		draw_runway(NEW_RUNWAY, actual_position.X, actual_position.Y, actual_position.W, current_line.X, current_line.Y, current_line.W)
+		draw_runway(NEW_DIVID_LINE, actual_position.X, actual_position.Y, actual_position.W * 0.01, current_line.X, current_line.Y, current_line.W * 0.01)
 
 	
 func init():
@@ -117,17 +124,17 @@ func controller_inputs():
 		
 func add_colors(n):
 	if(fmod(n / 3, 2)):
-		BORDER = Color(1,1,1)
-		RUNWAY = Color(0.42, 0.42, 0.42)
+		NEW_BORDER = BORDER
+		NEW_RUNWAY = RUNWAY
 	else:
-		BORDER = Color(0, 0, 0)
-		RUNWAY = Color(0.4, 0.4, 0.4)
+		NEW_BORDER = STRIPED_BORDER
+		NEW_RUNWAY = STRIPED_RUNWAY
 	if (fmod(n / 9, 2)):
-		DIVID_LINE = Color(0,0,0)
-		GRAMME = Color(0.2,0.2,0.2)
+		NEW_DIVID_LINE = DIVID_LINE
+		NEW_GRAMME = GRAMME
 	else:
-		DIVID_LINE = Color(1,1,1)
-		GRAMME = Color(0.8,0.8,0.8)
+		NEW_DIVID_LINE = STRIPED_DIVID_LINE
+		NEW_GRAMME = STRIPED_GRAMME
 		
 		
 		

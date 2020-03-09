@@ -4,3 +4,5 @@
 
 [node name="runway" type="Node2D"]
 script = ExtResource( 1 )
+STRIPED_RUNWAY = Color( 0.913725, 0.0980392, 0.0980392, 1 )
+STRIPED_BORDER = Color( 0.972549, 0.94902, 0.94902, 1 )

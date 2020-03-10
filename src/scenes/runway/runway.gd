@@ -3,7 +3,7 @@ extends Node2D
 var WIDTH = 1280
 var HEIGHT = 720
 
-export var RUNWAY_LENGHT = 3200
+export var RUNWAY_LENGHT = 1600
 export var RUNWAY_WIDTH = 2000
 export var SEGMENT_LENGHT = 200
 export var CAMERA_DEPTH = 0.84
@@ -36,8 +36,8 @@ var up_is_pressed = false
 
 
 func _ready():
-	init()
 	set_process_input(true)
+	init()
 	
 
 func _process(delta): 
@@ -85,30 +85,16 @@ func init():
 			scale = 0, curve = 0,
 		}
 		lines.push_back(struture_line)
-		lines[index].z = (index * SEGMENT_LENGHT)	
+		lines[index].z = (index * SEGMENT_LENGHT)
 		movements_controller_runway(index)
 	lines_lenght = lines.size()
 	set_process(true)
 	
-		
+
 func movements_controller_runway(index):
-	if (index > 300): lines[index].curve = 0.2
-	if (index > 400): lines[index].curve = 0.3
-	if (index > 500): lines[index].curve = 0.4
-	if (index > 600): lines[index].curve = 0.5
-	if (index > 700): lines[index].curve = 0.6
-	if (index > 800): lines[index].curve = 0.7
-	if (index > 900): lines[index].curve = 0.8
-	if (index > 1500): lines[index].curve = 0.3
-	
-	#if (index > 750): lines[index].curve = 0.8
-	#if (index > 800 && index < 1200): lines[index].curve = 0.6
-	#if (index > 1200): lines[index].curve = 0.9
-	#if (index > 1200 && index < 1450): lines[index].curve = 1
-	#if (index > 2000): lines[index].curve = 0.8
-	#if (index > 2000 && index < 2500): lines[index].curve = 0.5
-	#if (index > 2900 && index < 3000): lines[index].curve = -0.3
-	#if (index > 3200): lines[index].curve = -0.5
+	if (index > 300 && index < 750): lines[index].curve = 0.5
+	if (index > 800 && index < 1200): lines[index].curve = -0.7
+	if (index > 1200): lines[index].curve = 0.2
 
 
 func screen_coordinates(struture_line, cam_x, cam_y, cam_z):
@@ -117,13 +103,13 @@ func screen_coordinates(struture_line, cam_x, cam_y, cam_z):
 	struture_line.Y = (1 - struture_line.scale * (struture_line.y - cam_y)) * HEIGHT / 2
 	struture_line.W = struture_line.scale * RUNWAY_WIDTH * (WIDTH / 2)
 	return struture_line
-		
+
 
 func draw_runway(col, x1, y1, w1, x2, y2, w2):
 	var point = [Vector2(int(x1 - w1), int(y1)), Vector2(int(x2 - w2), int(y2)),
 	Vector2(int(x2 + w2), int(y2)), Vector2(int(x1 + w1), int(y1))]
 	draw_primitive(PoolVector2Array(point), PoolColorArray([col, col, col, col, col]), PoolVector2Array([]))
-		
+
 
 func controller_position():
 	while current_position >= (lines_lenght * SEGMENT_LENGHT):
@@ -134,10 +120,10 @@ func controller_position():
 
 func controller_inputs():
 	if up_is_pressed:
-		speed += 2
+		speed += 3
 		current_position += speed
 		
-		if speed >= 400: speed = 400
+		if speed >= 600: speed = 600
 			
 		if current_position == 320000:
 			current_position = 0
@@ -150,8 +136,8 @@ func controller_inputs():
 	elif speed > 5: 
 		current_position += speed; speed -= 5
 		if speed < 0: current_position = 0 
-		
-		
+
+
 func add_colors(n):
 	if(fmod(n / 3, 2)):
 		NEW_BORDER = BORDER
@@ -165,12 +151,12 @@ func add_colors(n):
 	else:
 		NEW_DIVID_LINE = STRIPED_DIVID_LINE
 		NEW_GRAMME = STRIPED_GRAMME
-		
+
 
 func _input(event):
     if event.is_action_pressed("ui_up"):
         up_is_pressed = true
     elif event.is_action_released("ui_up"):
         up_is_pressed = false
-		
-		
+
+

@@ -1,5 +1,6 @@
 extends Node2D
 
+onready var tree_01 = preload("res://src/scenes/runway_objects/tree_01.tscn")
 onready var line = preload("res://src/scripts/Line.gd")
 
 var WIDTH = 1920
@@ -34,6 +35,8 @@ var player_x = 0
 var speed = 0
 
 var up_is_pressed = false
+
+var controller_draw_sprites = true
 
 
 func _ready():
@@ -79,8 +82,11 @@ func _draw():
 		draw_runway(NEW_BORDER, actual_position.get_X(), actual_position.get_Y(), actual_position.get_W() * 1.2, current_line.get_X(), current_line.get_Y(), current_line.get_W() * 1.2)
 		draw_runway(NEW_RUNWAY, actual_position.get_X(), actual_position.get_Y(), actual_position.get_W(), current_line.get_X(), current_line.get_Y(), current_line.get_W())
 		draw_runway(NEW_DIVID_LINE, actual_position.get_X(), actual_position.get_Y(), actual_position.get_W() * 0.02, current_line.get_X(), current_line.get_Y(), current_line.get_W() * 0.02)
-
 	
+	draw_sprites()
+	update_position_sprites(start_point)
+	
+
 func init():
 	for index in range(RUNWAY_LENGHT):
 		var struture_line = line.Line.new(0,0,0,0,0,0,0,0,0,0,0)
@@ -94,6 +100,16 @@ func init():
 	
 
 func controller_runway(index):
+	var new_tree_01 = tree_01.instance()
+	
+	if (index > 100 && index < 400 && index % 20 == 0):
+		lines[index].set_sprite_x(-0.5)
+		lines[index].set_sprite(new_tree_01)
+		
+	if (index > 500 && index % 20 == 0):
+		lines[index].set_sprite_x(1)
+		lines[index].set_sprite(new_tree_01)
+		
 	if (index > 300 && index < 750): lines[index].set_curve(0.5)
 	if (index > 800 && index < 1200): lines[index].set_curve(-0.7)
 	if (index > 1200): lines[index].set_curve(0.2)
@@ -103,6 +119,24 @@ func draw_runway(color, x1, y1, w1, x2, y2, w2):
 	var point = [Vector2(int(x1 - w1), int(y1)), Vector2(int(x2 - w2), int(y2)),
 	Vector2(int(x2 + w2), int(y2)), Vector2(int(x1 + w1), int(y1))]
 	draw_primitive(PoolVector2Array(point), PoolColorArray([color, color, color, color, color]), PoolVector2Array([]))
+
+
+func draw_sprites():
+	if controller_draw_sprites:
+		for i in range(lines_lenght):
+			var current = lines[i]
+			if current.get_sprite():
+				add_child(current.run_sprite())
+	controller_draw_sprites = false
+
+
+func update_position_sprites(start_point):
+	var aux = start_point + 300
+	while aux > start_point:
+		var current = lines[aux%lines_lenght]
+		if current.get_sprite():
+			current.run_sprite()
+		aux -= 1
 
 
 func controller_position():

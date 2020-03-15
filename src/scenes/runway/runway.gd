@@ -85,7 +85,7 @@ func _draw():
 		add_colors(n)
 		
 		render_polygon(NEW_GRAMME, 0, previous_line.get_screen_y(), WIDTH, 0, current_line.get_screen_y(), WIDTH)
-		render_polygon(NEW_BORDER, previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w() * 1.2, current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w() * 1.2)
+		render_polygon(NEW_BORDER, previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w() * 1.1, current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w() * 1.1)
 		render_polygon(NEW_RUNWAY, previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w(), current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w())
 		render_polygon(NEW_DIVID_LINE, previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w() * 0.02, current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w() * 0.02)
 	

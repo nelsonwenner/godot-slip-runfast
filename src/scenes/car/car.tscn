@@ -1,0 +1,63 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://arts/world/car/left-01.png" type="Texture" id=1]
+[ext_resource path="res://arts/world/car/left-02.png" type="Texture" id=2]
+[ext_resource path="res://arts/world/car/right-09.png" type="Texture" id=3]
+[ext_resource path="res://arts/world/car/right-06.png" type="Texture" id=4]
+[ext_resource path="res://arts/world/car/right-02.png" type="Texture" id=5]
+[ext_resource path="res://arts/world/car/right-07.png" type="Texture" id=6]
+[ext_resource path="res://arts/world/car/right-01.png" type="Texture" id=7]
+[ext_resource path="res://arts/world/car/right-05.png" type="Texture" id=8]
+[ext_resource path="res://arts/world/car/right-08.png" type="Texture" id=9]
+[ext_resource path="res://arts/world/car/right-10.png" type="Texture" id=10]
+[ext_resource path="res://arts/world/car/idle.png" type="Texture" id=11]
+[ext_resource path="res://src/scenes/car/car.gd" type="Script" id=12]
+[ext_resource path="res://arts/world/car/right-03.png" type="Texture" id=13]
+[ext_resource path="res://arts/world/car/right-04.png" type="Texture" id=14]
+[ext_resource path="res://arts/world/car/right-11.png" type="Texture" id=15]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 11 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "curve_left",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "curve_right",
+"speed": 10.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "slip_left",
+"speed": 4.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 10 ), ExtResource( 3 ), ExtResource( 9 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 14 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "slip_right",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 77.7506, 56.331 )
+
+[node name="car" type="Node2D"]
+scale = Vector2( 1.7, 1.7 )
+script = ExtResource( 12 )
+
+[node name="body" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="body"]
+frames = SubResource( 1 )
+animation = "idle"
+
+[node name="collision" type="CollisionShape2D" parent="body"]
+shape = SubResource( 2 )
+[connection signal="area_entered" from="body" to="." method="_on_body_area_entered"]

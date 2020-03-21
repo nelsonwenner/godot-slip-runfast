@@ -1,10 +1,16 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/scenes/runway/runway.gd" type="Script" id=1]
+[ext_resource path="res://src/scenes/car/car.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/scenes/background/skyline.tscn" type="PackedScene" id=3]
 
-[node name="runway" type="Node2D"]
+[node name="runway" type="Node"]
+
+[node name="skyline" parent="." instance=ExtResource( 3 )]
+
+[node name="runway" type="Node2D" parent="."]
 script = ExtResource( 1 )
-BORDER = Color( 0.333333, 0.333333, 0.333333, 1 )
+BORDER = Color( 0.913725, 0.215686, 0.215686, 1 )
 RUNWAY = Color( 0.419608, 0.419608, 0.419608, 1 )
 DIVID_LINE = Color( 0.8, 0.8, 0.8, 1 )
 GRAMME = Color( 0.0627451, 0.666667, 0.0627451, 1 )
@@ -12,3 +18,6 @@ STRIPED_RUNWAY = Color( 0.411765, 0.411765, 0.411765, 1 )
 STRIPED_BORDER = Color( 0.733333, 0.733333, 0.733333, 1 )
 STRIPED_DIVID_LINE = Color( 0.419608, 0.419608, 0.419608, 1 )
 STRIPED_GRAMME = Color( 0, 0.603922, 0, 1 )
+
+[node name="car" parent="runway" instance=ExtResource( 2 )]
+[connection signal="collision" from="runway/car" to="runway" method="_on_car_collision"]

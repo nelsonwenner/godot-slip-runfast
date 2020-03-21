@@ -1,5 +1,7 @@
 class Line:
 	
+	var _border; var _runway; var _gramme; var _divid_line
+	
 	var _scale; var _curve; var _sprite_x
 	
 	var _world_x; var _world_y; var _world_z
@@ -8,18 +10,20 @@ class Line:
 	
 	var _clip; var _sprite
 	
-	func _init(world_x, world_y, world_z, screen_x, screen_y, screen_w, scale, curve, sprite_x, clip, sprite):
-		self._world_x = world_x
-		self._world_y = world_y
-		self._world_z = world_z
-		self._screen_x = screen_x
-		self._screen_y = screen_y
-		self._screen_w = screen_w
-		self._clip = clip
-		self._scale = scale
-		self._curve = curve
-		self._sprite = sprite
-		self._sprite_x = sprite_x
+	var _name_sprite
+	
+	func _init():
+		self._world_x = 0
+		self._world_y = 0
+		self._world_z = 0
+		self._screen_x = 0
+		self._screen_y = 0
+		self._screen_w = 0
+		self._clip = 0
+		self._scale = 0
+		self._curve = 0
+		self._sprite = 0
+		self._sprite_x = 0
 		
 	
 	func get_world_x():
@@ -110,6 +114,46 @@ class Line:
 		self._sprite = value
 		
 		
+	func set_name_sprite(value):
+		self._name_sprite = value 
+		
+		
+	func get_name_sprite():
+		return self._name_sprite
+		
+	
+	func get_color_border():
+		return self._border
+		
+		
+	func get_color_runway():
+		return self._runway
+		
+	
+	func get_color_gramme():
+		return self._gramme
+		
+	
+	func get_color_divid_line():
+		return self._divid_line
+		
+		
+	func set_color_border(value):
+		self._border = value
+		
+		
+	func set_color_runway(value):
+		self._runway = value
+		
+		
+	func set_color_gramme(value):
+		self._gramme = value
+		
+		
+	func set_color_divid_line(value):
+		self._divid_line = value
+		
+		
 	func screen_coordinates(cam_x, cam_y, cam_z, camera_depth, road_width, width, height):
 		self._scale = camera_depth / ((self._world_z - cam_z) if (self._world_z - cam_z) > 0 else 0.01)
 		self._screen_x = ((1 + self._scale * (self._world_x - cam_x)) * width / 2)
@@ -118,12 +162,12 @@ class Line:
 		return self
 	
 	
-	func run_sprite():
+	func run_sprite(width, height):
 		
 		var offsetX = self._screen_x + self._scale * self._sprite_x * 1920 / 2
-		var offsetY = self._screen_y + 4
-		var offsetW = 650 * self._screen_w / 266
-		var offsetH = 520 * self._screen_w / 266
+		var offsetY = self._screen_y + 8
+		var offsetW = width * self._screen_w / 266
+		var offsetH = height * self._screen_w / 266
 		
 		offsetX += offsetW * self._sprite_x
 		offsetY += offsetH * (-1)
@@ -133,6 +177,6 @@ class Line:
 		if clipH < 0: clipH = 0
 		
 		self._sprite.position = Vector2(offsetX, offsetY)
-		self._sprite.scale = Vector2(offsetW / 650, offsetH / 520)
+		self._sprite.scale = Vector2(offsetW / width, offsetH / height)
 		
 		return self._sprite

@@ -1,10 +1,6 @@
 extends Node2D
 
-onready var billboard_01 = preload("res://src/scenes/runway_objects/billboard_01.tscn")
 onready var road_block = preload("res://src/scenes/runway_objects/road_block.tscn")
-onready var tree_01 = preload("res://src/scenes/runway_objects/tree_01.tscn")
-onready var tree_02 = preload("res://src/scenes/runway_objects/tree_02.tscn")
-onready var bush_01 = preload("res://src/scenes/runway_objects/bush_01.tscn")
 onready var line = preload("res://src/scripts/Line.gd")
 
 var WIDTH = 1920
@@ -49,9 +45,6 @@ var distance_x = 0
 
 enum State {
 	tree_01 = 1, 
-	tree_02 = 2, 
-	bush_01 = 3,
-	billboard_01 = 4,
 	road_block = 5
 }
 
@@ -139,10 +132,9 @@ func _draw():
 		var previous_line = lines[(n - 1) % lines_lenght]
 		
 		var player_position_horizontal = play_curve - current_line.get_curve()
-		
+	
 		if player_position_horizontal <= -35 || player_position_horizontal >= 35:
 			pass
-			#print("fora da pista")
 			#speed -= 3
 		
 		accumulate_curve += distance_x
@@ -216,10 +208,14 @@ func controller_hud_return():
 	if quantity_return == 3:
 		instance_timer_step.stop() 
 		instance_timer.stop()
+		player_data.minutes_step = minutes_step
+		player_data.seconds_step = seconds_step
+		player_data.minutes = minutes
+		player_data.seconds = seconds
 		speed = 360
 		winner = true
-
-
+	
+		
 func start_timer():
 	if current_position > RUNWAY_LENGHT && not start_time:
 		start_time = true
@@ -229,6 +225,7 @@ func start_timer():
 		seconds_step = 59
 		ms_step = 0
 		minutes_step = 2
+		$music.play()
 
 
 func trigger_winner():
@@ -265,14 +262,6 @@ func draw_sprites():
 				set_state_sprite(current.get_name_sprite())
 
 				match current_state:
-					State.tree_01:
-						add_child(current.run_sprite(650, 520))
-					State.tree_02:
-						add_child(current.run_sprite(650, 520))
-					State.bush_01:
-						add_child(current.run_sprite(350, 100))
-					State.billboard_01:
-						add_child(current.run_sprite(650, 520))
 					State.road_block:
 						add_child(current.run_sprite(40, 1))
 	controller_draw_sprites = false
@@ -286,14 +275,6 @@ func update_position_sprites(start_point):
 			set_state_sprite(current.get_name_sprite())
 
 			match current_state:
-				State.tree_01:
-					current.run_sprite(650, 520)
-				State.tree_02:
-					current.run_sprite(650, 520)
-				State.bush_01:
-					current.run_sprite(350, 100)
-				State.billboard_01:
-					current.run_sprite(650, 520)
 				State.road_block:
 					current.run_sprite(40, 1)
 		aux -= 1
@@ -325,7 +306,7 @@ func controller_inputs():
 			$car/body/AnimatedSprite.play("curve_left")
 			$car.position.x -= 25
 			play_curve -= 1
-			
+		
 		elif Input.is_action_pressed("ui_home"):
 			
 			if accumulate_curve > 100000 && speed > 500:
@@ -336,9 +317,10 @@ func controller_inputs():
 				$car/body/AnimatedSprite.play("slip_left")
 				$car.position.x -= 20
 		else:
-			$car/body/AnimatedSprite.play("idle")	
-			
+			$car/body/AnimatedSprite.play("idle")
+
 		speed += 5
+		
 	else:
 		$car/body/AnimatedSprite.play("idle")
 		speed -= 5
@@ -354,9 +336,9 @@ func controller_curve(speed_percent):
 	if accumulate_curve < -10000:
 		$car.position.x -= (speed_percent * (accumulate_curve / 2) * centrifugal)
 		
-	camera_x = clamp(camera_x, -3000, 3000)
+	camera_x = clamp(camera_x, -4000, 4000)
 	
-	$car.position.x = clamp($car.position.x, 95, WIDTH - 95)
+	$car.position.x = clamp($car.position.x, 160, WIDTH - 160)
 
 
 func add_colors(index):
@@ -397,34 +379,12 @@ func controller_runway(index):
 		CURVE_LEFT06 = -7.5
 	}
 	
-	#var instance_tree_01 = tree_01.instance()
-	#var instance_tree_02 = tree_02.instance()
-	#var instance_bush_01 = bush_01.instance()
-	#var instance_billboard_01 = billboard_01.instance()
 	var instance_road_block = road_block.instance()
 	
 	if (index > 200 && index % 140 == 0):
 		lines[index].set_name_sprite(5)
 		lines[index].set_sprite(instance_road_block)
 		lines[index].set_sprite_x(rand_range(-5, 5))
-	
-	"""
-	if (index > 20 && index < 600 && index % 10 == 0):
-		lines[index].set_name_sprite(1)
-		lines[index].set_sprite(instance_tree_01)
-		lines[index].set_sprite_x(-0.5)
-		
-	if (index > 800 && index % 10 == 0):
-		lines[index].set_name_sprite(1)
-		lines[index].set_sprite(instance_tree_01)
-		lines[index].set_sprite_x(1)
-	
-
-	if (index > 500 && index % 15 == 0):
-		lines[index].set_name_sprite(2)
-		lines[index].set_sprite(new_tree_02)
-		lines[index].set_sprite_x(rand_range(2, 5))
-	"""
 	
 	# Curve on right
 	

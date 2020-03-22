@@ -61,17 +61,51 @@ var play_curve = 0
 
 var skyline
 
+var seconds = 0
+var minutes = 0
+var ms = 0
+
+var hud_time
+var hud_return
+var timer
+
+var quantity_return = 0
+
+var instance_timer
+
+var instance_timer_step
+var hud_timer_step
+var ms_step = 0
+var minutes_step = 2
+var seconds_step = 59
+
+var start_time = false
+
+
 func _ready():
 	randomize()
 	
-	$car.position = Vector2(960, 900)
+	hud_time = get_node("../hud_time/time")
+	hud_return = get_node("../hud_return/return")
+	hud_timer_step = get_node("../hud_timer_step/time")
+	
+	instance_timer = get_node("../timer")
+	instance_timer.start()
+	
+	instance_timer_step = get_node("../timer_step")
+	instance_timer_step.start()
+	
+	$car.position = Vector2(960, 870)
 	skyline = get_node("../skyline/Sprite")
 	
 	set_process_input(true)
 	init()
 	
 
-func _process(_delta): 
+func _process(_delta):
+	controller_hud_timer()
+	controller_hud_timer_step()
+	controller_hud_return()
 	update()
 	
 	
@@ -79,6 +113,7 @@ func _draw():
 	
 	var speed_percent = speed / 500
 	
+	start_timer()
 	controller_inputs()
 	controller_curve(speed_percent)
 	controller_position()
@@ -115,8 +150,6 @@ func _draw():
 		if (current_line.get_screen_y() >= max_y): continue
 		max_y = current_line.get_screen_y()
 		
-		#add_colors(n)
-		
 		render_polygon(current_line.get_color_gramme(), 0, previous_line.get_screen_y(), WIDTH, 0, current_line.get_screen_y(), WIDTH)
 		render_polygon(current_line.get_color_border(), previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w() * 1.1, current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w() * 1.1)
 		render_polygon(current_line.get_color_runway(), previous_line.get_screen_x(), previous_line.get_screen_y(), previous_line.get_screen_w(), current_line.get_screen_x(), current_line.get_screen_y(), current_line.get_screen_w())
@@ -137,6 +170,61 @@ func init():
 		controller_runway(index)
 	lines_lenght = lines.size()
 	set_process(true)
+	
+	
+func controller_hud_timer():
+	if ms > 9: 
+		seconds += 1
+		ms = 0
+	if seconds > 59: 
+		minutes += 1
+		seconds = 0
+
+	if start_time:
+		hud_time.text = "total time   " + str(minutes) + ":" + str(seconds)
+	else:
+		hud_time.text = "total time   " + str(0) + ":" + str(0)
+
+
+func controller_hud_timer_step():
+	if minutes_step == 0 && seconds_step == 0:
+		hud_timer_step.text = "time  " + str(0) + ":" + str(0)
+		instance_timer.stop()
+		speed = 360
+		player_data.losers += 1 #LOSER
+		return
+	
+	if ms_step > 9:
+		seconds_step -= 1
+		ms_step = 0
+		
+	if seconds_step == 0 && minutes_step != 0:
+		minutes_step -= 1
+		seconds_step = 59
+		
+	if start_time:
+		hud_timer_step.text = "time  " + "\n" + str(minutes_step) + ":" + str(seconds_step)
+	else:
+		hud_timer_step.text = "time  " + "\n" + str(2) + ":" + str(59)
+
+
+func controller_hud_return():
+	hud_return.text = "return  " + str(quantity_return) + "/" + "3"
+	if quantity_return == 3:
+		instance_timer_step.stop() 
+		instance_timer.stop()
+		speed = 360
+
+
+func start_timer():
+	if current_position > RUNWAY_LENGHT && not start_time:
+		start_time = true
+		seconds = 0
+		minutes = 0
+		ms = 0
+		seconds_step = 59
+		ms_step = 0
+		minutes_step = 2
 	
 	
 func _input(event):
@@ -208,14 +296,14 @@ func set_state_sprite(state):
 
 func controller_position():
 	while current_position >= (lines_lenght * SEGMENT_LENGHT):
+		quantity_return += 1
+		print("passou linha de chegada")
 		current_position -= (lines_lenght * SEGMENT_LENGHT)
 	while current_position < 0:
 		current_position += (lines_lenght * SEGMENT_LENGHT)
 
 
 func controller_inputs():
-	
-	$car/body/AnimatedSprite.play("idle")
 	
 	if up_is_pressed:
 		
@@ -224,23 +312,26 @@ func controller_inputs():
 			$car.position.x += 25
 			play_curve += 1
 			
-		if Input.is_action_pressed("ui_left"):
+		elif Input.is_action_pressed("ui_left"):
 			$car/body/AnimatedSprite.play("curve_left")
 			$car.position.x -= 25
 			play_curve -= 1
 			
-		if Input.is_action_pressed("ui_home"):
+		elif Input.is_action_pressed("ui_home"):
 			
 			if accumulate_curve > 100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_right")
-				$car.position.x += 15
+				$car.position.x += 20
 				
-			elif accumulate_curve < -100000 && speed > 500:
+			if accumulate_curve < -100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_left")
-				$car.position.x -= 15
-				
+				$car.position.x -= 20
+		else:
+			$car/body/AnimatedSprite.play("idle")	
+			
 		speed += 5
 	else:
+		$car/body/AnimatedSprite.play("idle")
 		speed -= 5
 	
 	speed = clamp(speed, 0, max_speed)
@@ -277,7 +368,7 @@ func add_colors(index):
 	if index > 10 && index < 15:
 		lines[index].set_color_runway(Color(204, 204, 204))
 		lines[index].set_color_divid_line(Color(204, 204, 204))
-
+	
 
 func controller_runway(index):
 	
@@ -303,7 +394,7 @@ func controller_runway(index):
 	#var instance_billboard_01 = billboard_01.instance()
 	var instance_road_block = road_block.instance()
 	
-	if (index > 200 && index % 150 == 0):
+	if (index > 200 && index % 140 == 0):
 		lines[index].set_name_sprite(5)
 		lines[index].set_sprite(instance_road_block)
 		lines[index].set_sprite_x(rand_range(-5, 5))
@@ -364,3 +455,11 @@ func controller_runway(index):
 func _on_car_collision():
 	current_position += -1000
 	speed = 0
+
+
+func _on_timer_finish_line():
+	ms += 1
+
+
+func _on_timer_step():
+	ms_step += 1

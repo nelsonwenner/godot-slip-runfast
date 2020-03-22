@@ -1,10 +1,19 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://src/scenes/runway/runway.gd" type="Script" id=1]
 [ext_resource path="res://src/scenes/car/car.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/scenes/background/skyline.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/screens/timer/hud_time.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/screens/return/hud_return.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/screens/timer/hud_timer_step.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/screens/pause/pause.tscn" type="PackedScene" id=7]
 
 [node name="runway" type="Node"]
+
+[node name="user_menu" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="pause" parent="user_menu" instance=ExtResource( 7 )]
 
 [node name="skyline" parent="." instance=ExtResource( 3 )]
 
@@ -20,4 +29,18 @@ STRIPED_DIVID_LINE = Color( 0.419608, 0.419608, 0.419608, 1 )
 STRIPED_GRAMME = Color( 0, 0.603922, 0, 1 )
 
 [node name="car" parent="runway" instance=ExtResource( 2 )]
+
+[node name="hud_time" parent="." instance=ExtResource( 4 )]
+
+[node name="hud_return" parent="." instance=ExtResource( 5 )]
+
+[node name="hud_timer_step" parent="." instance=ExtResource( 6 )]
+
+[node name="timer" type="Timer" parent="."]
+wait_time = 0.1
+
+[node name="timer_step" type="Timer" parent="."]
+wait_time = 0.1
 [connection signal="collision" from="runway/car" to="runway" method="_on_car_collision"]
+[connection signal="timeout" from="timer" to="runway" method="_on_timer_finish_line"]
+[connection signal="timeout" from="timer_step" to="runway" method="_on_timer_step"]

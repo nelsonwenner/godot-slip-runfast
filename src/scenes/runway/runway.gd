@@ -81,6 +81,8 @@ var seconds_step = 59
 
 var start_time = false
 
+var winner = false
+
 
 func _ready():
 	randomize()
@@ -103,6 +105,7 @@ func _ready():
 	
 
 func _process(_delta):
+	trigger_winner()
 	controller_hud_timer()
 	controller_hud_timer_step()
 	controller_hud_return()
@@ -214,6 +217,7 @@ func controller_hud_return():
 		instance_timer_step.stop() 
 		instance_timer.stop()
 		speed = 360
+		winner = true
 
 
 func start_timer():
@@ -225,6 +229,11 @@ func start_timer():
 		seconds_step = 59
 		ms_step = 0
 		minutes_step = 2
+
+
+func trigger_winner():
+	if winner:
+		get_tree().change_scene("res://src/screens/winner/winner.tscn")
 	
 	
 func _input(event):

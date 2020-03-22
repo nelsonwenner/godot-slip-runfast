@@ -5,7 +5,7 @@ var paused = false setget set_paused
 
 
 func _ready():
-	player_data.connect("player_loser", self, "_playerdata_player_loser")
+	var player_loser = player_data.connect("player_loser", self, "_playerdata_player_loser")
 
 
 func _unhandled_input(event):

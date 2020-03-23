@@ -1,0 +1,110 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://fonts/kenvector_future.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/ui_theme.tres" type="Theme" id=2]
+[ext_resource path="res://arts/world/background/background.png" type="Texture" id=3]
+[ext_resource path="res://fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://src/screens/winner/play_again.gd" type="Script" id=5]
+[ext_resource path="res://src/screens/winner/play_quit.gd" type="Script" id=6]
+[ext_resource path="res://src/screens/winner/winner.gd" type="Script" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 36
+outline_size = 1
+use_filter = true
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 76
+outline_size = 3
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 35
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 35
+font_data = ExtResource( 4 )
+
+[node name="winner" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.00012207
+rect_min_size = Vector2( 1280, 720 )
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="background" type="TextureRect" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_min_size = Vector2( 1280, 720 )
+texture = ExtResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="info" type="Label" parent="background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -253.5
+margin_top = 415.0
+margin_right = 253.5
+margin_bottom = 500.0
+custom_fonts/font = SubResource( 1 )
+text = "Your timer is:  %s:%s
+Time left:  %s:%s"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -283.5
+margin_top = 307.0
+margin_right = 283.5
+margin_bottom = 393.0
+custom_fonts/font = SubResource( 2 )
+text = "YOU WINNER"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -184.0
+margin_top = 526.0
+margin_right = 184.0
+margin_bottom = 682.0
+theme = ExtResource( 2 )
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="play_again" type="Button" parent="background/VBoxContainer"]
+margin_right = 368.0
+margin_bottom = 74.0
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 3 )
+text = "Play Again"
+script = ExtResource( 5 )
+
+[node name="play_quit" type="Button" parent="background/VBoxContainer"]
+margin_top = 82.0
+margin_right = 368.0
+margin_bottom = 156.0
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 4 )
+text = "Quit"
+script = ExtResource( 6 )
+[connection signal="button_up" from="background/VBoxContainer/play_again" to="background/VBoxContainer/play_again" method="_on_play_again_button_up"]
+[connection signal="button_up" from="background/VBoxContainer/play_quit" to="background/VBoxContainer/play_quit" method="_on_play_quit_button_up"]

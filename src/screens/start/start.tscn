@@ -31,12 +31,12 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=2]
 size = 120
 outline_size = 7
 font_data = ExtResource( 22 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=3]
 size = 220
 outline_size = 12
 use_filter = true
@@ -68,7 +68,7 @@ margin_left = 823.471
 margin_top = 460.0
 margin_right = 1083.47
 margin_bottom = 607.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.866667, 0.556863, 0.556863, 1 )
 custom_colors/font_color_hover = Color( 0.917647, 0.568627, 0.192157, 1 )
 custom_colors/font_color_pressed = Color( 0.866667, 0.556863, 0.556863, 1 )
@@ -84,7 +84,7 @@ margin_left = 420.359
 margin_top = 197.816
 margin_right = 1517.36
 margin_bottom = 455.816
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.917647, 0.568627, 0.192157, 1 )
 text = "Slip Runfast"
 __meta__ = {

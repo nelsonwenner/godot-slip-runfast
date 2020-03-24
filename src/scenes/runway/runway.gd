@@ -298,24 +298,24 @@ func controller_inputs():
 	if up_is_pressed:
 		
 		if Input.is_action_pressed("ui_right"):
-			$car/body/AnimatedSprite.play("curve_right")
-			$car.position.x += 25
-			play_curve += 1
-			
-		elif Input.is_action_pressed("ui_left"):
-			$car/body/AnimatedSprite.play("curve_left")
-			$car.position.x -= 25
-			play_curve -= 1
-		
-		elif Input.is_action_pressed("ui_home"):
 			
 			if accumulate_curve > 100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_right")
-				$car.position.x += 20
-				
+				$car.position.x += 25
+			else:
+				$car/body/AnimatedSprite.play("curve_right")
+				$car.position.x += 25
+				play_curve += 1
+			
+		elif Input.is_action_pressed("ui_left"):
+			
 			if accumulate_curve < -100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_left")
-				$car.position.x -= 20
+				$car.position.x -= 25
+			else:
+				$car/body/AnimatedSprite.play("curve_left")
+				$car.position.x -= 25
+				play_curve -= 1
 		else:
 			$car/body/AnimatedSprite.play("idle")
 
@@ -384,7 +384,7 @@ func controller_runway(index):
 	if (index > 200 && index % 140 == 0):
 		lines[index].set_name_sprite(5)
 		lines[index].set_sprite(instance_road_block)
-		lines[index].set_sprite_x(rand_range(-5, 5))
+		lines[index].set_sprite_x(rand_range(-2, 2))
 	
 	# Curve on right
 	

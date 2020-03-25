@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/65143466_343552813003394_7297097221986582528_o.jpg-8df1bb064000182176a1a37842665f2c.stex"
+path="res://.import/tumblr_p1d6kv92051soktugo1_640.png-8eed7863b4a1d882fee13005c8410595.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arts/world/background/65143466_343552813003394_7297097221986582528_o.jpg"
-dest_files=[ "res://.import/65143466_343552813003394_7297097221986582528_o.jpg-8df1bb064000182176a1a37842665f2c.stex" ]
+source_file="res://arts/world/background/tumblr_p1d6kv92051soktugo1_640.png"
+dest_files=[ "res://.import/tumblr_p1d6kv92051soktugo1_640.png-8eed7863b4a1d882fee13005c8410595.stex" ]
 
 [params]
 

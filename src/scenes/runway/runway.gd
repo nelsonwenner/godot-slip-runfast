@@ -301,9 +301,11 @@ func controller_inputs():
 			
 			if accumulate_curve > 100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_right")
+				$car/body/AnimationCollision.play("animation_slip_right")
 				$car.position.x += 25
 			else:
 				$car/body/AnimatedSprite.play("curve_right")
+				$car/body/AnimationCollision.play("right")
 				$car.position.x += 25
 				play_curve += 1
 			
@@ -311,18 +313,22 @@ func controller_inputs():
 			
 			if accumulate_curve < -100000 && speed > 500:
 				$car/body/AnimatedSprite.play("slip_left")
+				$car/body/AnimationCollision.play("animation_slip_left")
 				$car.position.x -= 25
 			else:
 				$car/body/AnimatedSprite.play("curve_left")
+				$car/body/AnimationCollision.play("left")
 				$car.position.x -= 25
 				play_curve -= 1
 		else:
 			$car/body/AnimatedSprite.play("idle")
+			$car/body/AnimationCollision.play("idle")
 
 		speed += 5
 		
 	else:
 		$car/body/AnimatedSprite.play("idle")
+		$car/body/AnimationCollision.play("idle")
 		speed -= 5
 	
 	speed = clamp(speed, 0, max_speed)

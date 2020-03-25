@@ -2,7 +2,7 @@
 
 [ext_resource path="res://fonts/kenvector_future.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://fonts/ui_theme.tres" type="Theme" id=2]
-[ext_resource path="res://arts/world/background/background.png" type="Texture" id=3]
+[ext_resource path="res://arts/world/background/tumblr_p1d6kv92051soktugo1_640.png" type="Texture" id=3]
 [ext_resource path="res://fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://src/screens/winner/play_again.gd" type="Script" id=5]
 [ext_resource path="res://src/screens/winner/play_quit.gd" type="Script" id=6]

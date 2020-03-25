@@ -33,6 +33,7 @@ STRIPED_GRAMME = Color( 0, 0.603922, 0, 1 )
 
 [node name="music" type="AudioStreamPlayer" parent="runway"]
 stream = ExtResource( 8 )
+volume_db = -10.0
 
 [node name="hud_time" parent="." instance=ExtResource( 4 )]
 

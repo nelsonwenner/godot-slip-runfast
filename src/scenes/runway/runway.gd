@@ -289,7 +289,6 @@ func set_state_sprite(state):
 func controller_position():
 	while current_position >= (lines_lenght * SEGMENT_LENGHT):
 		quantity_return += 1
-		print("passou linha de chegada")
 		current_position -= (lines_lenght * SEGMENT_LENGHT)
 	while current_position < 0:
 		current_position += (lines_lenght * SEGMENT_LENGHT)

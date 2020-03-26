@@ -130,13 +130,15 @@ func _draw():
 		var current_line = line_instance.screen_coordinates(($car.position.x - 960) - accumulate_curve, cam_horizontal, (start_point * SEGMENT_LENGHT) - (lines_lenght * SEGMENT_LENGHT if n >= lines_lenght else 0), CAMERA_DEPTH, RUNWAY_WIDTH, WIDTH, HEIGHT)
 		
 		var previous_line = lines[(n - 1) % lines_lenght]
-		
-		var player_position_horizontal = play_curve - current_line.get_curve()
 	
-		if player_position_horizontal <= -35 || player_position_horizontal >= 35:
-			pass
-			#speed -= 3
+		if $car.position.x < 160:
+			$car/body/AnimatedSprite.play("curve_right")
+			speed = 250
 		
+		elif $car.position.x > 1760:
+			$car/body/AnimatedSprite.play("curve_left")
+			speed = 250
+			
 		accumulate_curve += distance_x
 		distance_x += current_line.get_curve()
 		
@@ -344,7 +346,7 @@ func controller_curve(speed_percent):
 		
 	camera_x = clamp(camera_x, -4000, 4000)
 	
-	$car.position.x = clamp($car.position.x, 160, WIDTH - 160)
+	$car.position.x = clamp($car.position.x, 60, WIDTH - 60)
 
 
 func add_colors(index):

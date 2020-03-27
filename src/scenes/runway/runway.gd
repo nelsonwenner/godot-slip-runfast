@@ -69,8 +69,8 @@ var instance_timer
 var instance_timer_step
 var hud_timer_step
 var ms_step = 0
-var minutes_step = 2
-var seconds_step = 59
+var minutes_step = 3
+var seconds_step = 0
 
 var start_time = false
 
@@ -202,7 +202,7 @@ func controller_hud_timer_step():
 	if start_time:
 		hud_timer_step.text = "time  " + "\n" + str(minutes_step) + ":" + str(seconds_step)
 	else:
-		hud_timer_step.text = "time  " + "\n" + str(2) + ":" + str(59)
+		hud_timer_step.text = "time  " + "\n" + str(3) + ":" + str(0)
 
 
 func controller_hud_return():
@@ -224,7 +224,7 @@ func start_timer():
 		seconds = 0
 		minutes = 0
 		ms = 0
-		seconds_step = 59
+		seconds_step = 60
 		ms_step = 0
 		minutes_step = 2
 		$music.play()
